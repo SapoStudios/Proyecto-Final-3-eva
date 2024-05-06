@@ -10,6 +10,9 @@ public class Card : MonoBehaviour
     [SerializeField] TextMeshProUGUI SpaceToWrite;
     [SerializeField] float typingSpeed = 0.1f;
     [SerializeField] public bool IamCorrect;
+
+    [Header("IsContacted")]
+    [SerializeField] bool _IsContacted;
     // Start is called before the first frame update
     void Start()
     {
@@ -46,12 +49,27 @@ public class Card : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other != null)
+        if (GameManager.instance._IsStarted)
         {
-            if (other.gameObject.CompareTag("Bullet"))
+            if (!_IsContacted)
             {
-               if (IamCorrect) { GameManager.instance.win(); }
+                _IsContacted = true;
+                StartCoroutine(RestartCollider());
+                if (other != null)
+                {
+                    if (other.gameObject.CompareTag("Bullet"))
+                    {
+                        if (IamCorrect) { GameManager.instance.accertQuestion(); }
+                        else { GameManager.instance.failQuestion(); }
+                    }
+                }
             }
         }
+    }
+    IEnumerator RestartCollider()
+    {
+        yield return new WaitForSeconds(2);
+        _IsContacted = false;
+        StartCoroutine(RestartCollider());
     }
 }

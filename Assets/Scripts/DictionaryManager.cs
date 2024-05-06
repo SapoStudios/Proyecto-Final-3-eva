@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DictionaryManager : MonoBehaviour
 {
-
+    public static DictionaryManager instance;
     [Header("Dictionaries")]
     [SerializeField] public Dictionary<int, string> D_simpleSums = new Dictionary<int,string>();
     [SerializeField] public Dictionary<int, string> D_simpleSubstracs = new Dictionary<int, string>();
@@ -54,7 +54,16 @@ public class DictionaryManager : MonoBehaviour
         startMultiply();
         startSums();
     }
-
+    private void Awake()
+    {
+        // ----------------------------------------------------------------
+        // AQUÍ ES DONDE SE DEFINE EL COMPORTAMIENTO DE LA CLASE SINGLETON
+        // Garantizamos que solo exista una instancia del AudioManager
+        // Si no hay instancias previas se asigna la actual
+        // Si hay instancias se destruye la nueva
+        if (instance == null) instance = this;
+        else { Destroy(gameObject); return; }
+    }
     // Update is called once per frame
     void Update()
     {
@@ -63,6 +72,32 @@ public class DictionaryManager : MonoBehaviour
         {
             CardTextGenerator.instance.WriteOnCall(D_simpleSums[Random.Range(0, D_simpleSums.Count)]);
         }
+    }
+
+    public void PlaySums()
+    {
+        Debug.Log("prueba2");
+        CardTextGenerator.instance.WriteOnCall(D_simpleSums[Random.Range(0, D_simpleSums.Count)]);
+    }
+    public void PlaySubsttacts()
+    {
+        Debug.Log("prueba2");
+        CardTextGenerator.instance.WriteOnCall(D_simpleSubstracs[Random.Range(0, D_simpleSubstracs.Count)]);
+    }
+    public void PlayDivides()
+    {
+        Debug.Log("prueba2");
+        CardTextGenerator.instance.WriteOnCall(D_simpledivides[Random.Range(0, D_simpledivides.Count)]);
+    }
+    public void PlayMultiplies()
+    {
+        Debug.Log("prueba2");
+        CardTextGenerator.instance.WriteOnCall(D_simplemultiplies[Random.Range(0, D_simplemultiplies.Count)]);
+    }
+    public void PlayEcuations()
+    {
+        Debug.Log("prueba2");
+        CardTextGenerator.instance.WriteOnCall(D_simpleEcuations[Random.Range(0, D_simpleEcuations.Count)]);
     }
     void startSums()
     {
